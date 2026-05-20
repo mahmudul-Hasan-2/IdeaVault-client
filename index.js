@@ -96,6 +96,7 @@ async function run() {
 
     // All Patch here
     app.patch("/comment/:id", async (req, res) => {
+      console.log(req.params);
       const id = req.params.id;
       const commentInf = req.body;
 
@@ -103,7 +104,15 @@ async function run() {
         { _id: new ObjectId(id) },
         { $set: commentInf },
       );
-      ch;
+      res.json(result);
+    });
+
+    // All delete here
+
+    app.delete("/comment/:id", async (req, res) => {
+      const { id } = req.params;
+
+      const result = await commentsColl.deleteOne({ _id: new ObjectId(id) });
       res.json(result);
     });
 
