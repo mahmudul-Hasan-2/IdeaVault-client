@@ -9,7 +9,6 @@ const MyIdeasPage = async () => {
   const res = await fetch("http://localhost:5000/ideas");
   const ideas = await res.json();
   const myIdeas = ideas.filter((idea) => idea.userId === user?.id);
-  console.log(myIdeas);
   return <div></div>;
 };
 
