@@ -24,7 +24,7 @@ const TrendingCard = ({ trendingData }) => {
 
         <p>{trendingData.estimatedBudget}</p>
         <Link href={`ideas/${trendingData._id}`}>
-          <button className="btn btn-ghost hover:scale-105 duration-700">
+          <button className="btn btn-primary w-full hover:scale-105 duration-700">
             View Details
           </button>
         </Link>

@@ -77,7 +77,7 @@ const Footer = () => {
                     <FaInstagram size={40}></FaInstagram>
                   </button>
                   <button
-                    className="cursor-pointer  tooltip tooltip-bottom tooltip-primary hover:scale-105 duration-700"
+                    className="cursor-pointer  tooltip tooltip-bottom tooltip-info hover:scale-105 duration-700"
                     data-tip="Twitter"
                   >
                     <FaXTwitter size={40}></FaXTwitter>

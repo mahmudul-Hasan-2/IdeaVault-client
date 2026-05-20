@@ -6,8 +6,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
+import { useTheme } from "next-themes";
 
 const Navbar = () => {
+  const { theme, setTheme } = useTheme();
   const pathName = usePathname();
   const { data } = useSession();
   const user = data?.user;
@@ -125,6 +127,12 @@ const Navbar = () => {
             </div>
           )}
         </div>
+        <button
+          className="btn"
+          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+        >
+          Toggle Theme
+        </button>
         <div className="navbar-end items-center gap-3 lg:hidden">
           <div className="dropdown dropdown-end" onClick={handleMenuToggle}>
             <div tabIndex={0} role="button" className="btn btn-circle ">
@@ -199,6 +207,12 @@ const Navbar = () => {
               </div>
             </ul>
           </div>
+          <button
+            className="btn"
+            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          >
+            Toggle Theme
+          </button>
           {user && (
             <div className="dropdown dropdown-end">
               <div tabIndex={0} role="button">
