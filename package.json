@@ -1,7 +1,8 @@
 {
-  "name": "assignment-9-cliemt",
+  "name": "assignment-9-client",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

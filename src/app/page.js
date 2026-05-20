@@ -4,6 +4,10 @@ import TopCreator from "@/components/homePage/TopCreator";
 import TrendingIdeas from "@/components/homePage/TrendingIdeas";
 import Image from "next/image";
 
+export const metadata = {
+  title: "IdeaVault",
+  description: "This is a modern Idea sharing platform",
+};
 
 export default function Home() {
   return (

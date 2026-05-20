@@ -2,6 +2,7 @@ import { Mail, Phone } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
   return (
@@ -76,10 +77,10 @@ const Footer = () => {
                     <FaInstagram size={40}></FaInstagram>
                   </button>
                   <button
-                    className="cursor-pointer text-blue-500 tooltip tooltip-bottom tooltip-primary hover:scale-105 duration-700"
+                    className="cursor-pointer  tooltip tooltip-bottom tooltip-primary hover:scale-105 duration-700"
                     data-tip="Twitter"
                   >
-                    <FaTwitter size={40}></FaTwitter>
+                    <FaXTwitter size={40}></FaXTwitter>
                   </button>
                 </div>
               </div>
