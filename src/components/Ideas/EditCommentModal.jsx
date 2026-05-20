@@ -9,30 +9,26 @@ export default function EditCommentModal({ comment }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [textLength, setTextLength] = useState(comment?.text?.length || 0);
   const [focusedField, setFocusedField] = useState(null);
+
   const { data } = useSession();
   const user = data?.user;
 
-  // Check if current user is the comment owner
   const isCommentOwner = user?.id === comment?.userId;
 
   const handleEditNow = async (e) => {
     e.preventDefault();
 
-    // Check ownership before allowing edit
     if (!isCommentOwner) {
       toast.error("You can only edit your own comments!");
       return;
     }
 
     setIsSubmitting(true);
+
     const formData = new FormData(e.target);
     const editedData = Object.fromEntries(formData);
 
-    console.log(editedData);
-
     try {
-      // Add your API call here
-      console.log(`http://localhost:5000/comment/${comment._id}`);
       const res = await fetch(`http://localhost:5000/comment/${comment._id}`, {
         method: "PATCH",
         headers: {
@@ -40,10 +36,15 @@ export default function EditCommentModal({ comment }) {
         },
         body: JSON.stringify(editedData),
       });
+
       const data = await res.json();
-      console.log(data);
-      toast.success("Comment updated successfully!");
-      document.getElementById("my_modal_5").close();
+
+      if (data.modifiedCount > 0 || data.success) {
+        toast.success("Comment updated successfully!");
+        document.getElementById(`modal_${comment?._id}`).close();
+      } else {
+        toast.error("No changes detected");
+      }
     } catch (error) {
       toast.error("Failed to update comment");
     } finally {
@@ -52,100 +53,111 @@ export default function EditCommentModal({ comment }) {
   };
 
   return (
-    <div>
-      {/* Open Modal Button - Only show if user is comment owner */}
+    <div className="w-full">
+      {/* Edit Button */}
       {isCommentOwner ? (
         <button
-          onClick={() => document.getElementById("my_modal_5").showModal()}
-          className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 px-5 py-2 font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 w-full"
-          title="Edit your comment"
+          onClick={() =>
+            document.getElementById(`modal_${comment?._id}`).showModal()
+          }
+          className="w-full rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 px-4 py-2.5 text-sm sm:text-base font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:from-indigo-600 hover:to-purple-600"
         >
-          <Pencil size={18} />
-          Edit Comment
+          <div className="flex items-center justify-center gap-2">
+            <Pencil size={18} />
+            <span>Edit Comment</span>
+          </div>
         </button>
       ) : (
-        <div
-          className="flex items-center gap-2 rounded-xl bg-gray-300 px-5 py-3 font-semibold text-gray-600 shadow-lg cursor-not-allowed opacity-60 w-full"
-          title="You can only edit your own comments"
-        >
-          <Pencil size={18} />
-          Edit Comment
+        <div className="w-full cursor-not-allowed rounded-xl bg-gray-300 px-4 py-2.5 text-sm sm:text-base font-semibold text-gray-600 opacity-60">
+          <div className="flex items-center justify-center gap-2">
+            <Pencil size={18} />
+            <span>Edit Comment</span>
+          </div>
         </div>
       )}
 
       {/* Modal */}
-      <dialog id="my_modal_5" className="modal">
-        <div className="modal-box w-11/12 max-w-3xl rounded-[28px] bg-gradient-to-br from-white to-slate-50 p-0 shadow-2xl overflow-hidden">
-          {/* Header with Gradient Background */}
-          <div className="bg-gradient-to-r from-indigo-500 to-purple-500 px-10 py-8">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-3xl font-bold text-white">
+      <dialog id={`modal_${comment?._id}`} className="modal px-2 sm:px-4">
+        <div className="modal-box w-full max-w-[95%] sm:max-w-2xl lg:max-w-3xl rounded-3xl bg-gradient-to-br from-white to-slate-50 p-0 shadow-2xl overflow-hidden">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-indigo-500 to-purple-500 px-4 sm:px-6 md:px-10 py-5 sm:py-7">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">
                   ✏️ Edit Comment
                 </h3>
-                <p className="mt-2 text-indigo-100">
+
+                <p className="mt-1 text-sm sm:text-base text-indigo-100">
                   Update your comment information
                 </p>
               </div>
 
-              {/* Close Button */}
               <button
-                onClick={() => document.getElementById("my_modal_5").close()}
-                className="rounded-full bg-white bg-opacity-20 hover:bg-opacity-30 p-3 transition-all duration-300 text-white"
+                type="button"
+                onClick={() =>
+                  document.getElementById(`modal_${comment?._id}`).close()
+                }
+                className="rounded-full bg-white/20 p-2 text-white transition hover:bg-white/30 flex-shrink-0"
               >
-                <X size={28} />
+                <X size={22} className="sm:w-7 sm:h-7" />
               </button>
             </div>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleEditNow} className="space-y-6 px-8 py-8">
-            {/* Comment */}
+          <form
+            onSubmit={handleEditNow}
+            className="space-y-5 sm:space-y-6 px-4 sm:px-6 md:px-8 py-5 sm:py-8"
+          >
+            {/* Comment Field */}
             <div>
-              <div className="flex items-center justify-between mb-3">
-                <label className="block text-lg font-semibold text-slate-800">
+              <div className="mb-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                <label className="text-base sm:text-lg font-semibold text-slate-800">
                   💬 Comment
                 </label>
-                <span className="text-sm text-slate-500">
+
+                <span className="text-xs sm:text-sm text-slate-500">
                   {textLength} character{textLength !== 1 ? "s" : ""}
                 </span>
               </div>
 
               <div
-                className={`flex rounded-2xl border-2 bg-white px-5 py-3 transition-all duration-300 ${
+                className={`flex rounded-2xl border-2 bg-white px-3 sm:px-5 py-3 transition-all duration-300 ${
                   focusedField === "text"
                     ? "border-indigo-500 shadow-lg shadow-indigo-200"
                     : "border-slate-200 hover:border-slate-300"
                 }`}
               >
                 <MessageSquare
-                  className={`mt-3 transition-colors duration-300 flex-shrink-0 ${
+                  className={`mt-2 flex-shrink-0 transition-colors duration-300 ${
                     focusedField === "text"
                       ? "text-indigo-500"
                       : "text-slate-400"
                   }`}
-                  size={24}
+                  size={22}
                 />
 
                 <textarea
-                  rows="6"
+                  rows="5"
                   name="text"
                   defaultValue={comment?.text || ""}
                   placeholder="Write your comment..."
                   onFocus={() => setFocusedField("text")}
                   onBlur={() => setFocusedField(null)}
                   onChange={(e) => setTextLength(e.target.value.length)}
-                  className="w-full resize-none bg-transparent px-4 py-2 text-lg outline-none text-slate-800 placeholder-slate-400"
-                ></textarea>
+                  className="w-full resize-none bg-transparent px-3 sm:px-4 py-2 text-sm sm:text-base md:text-lg text-slate-800 outline-none placeholder:text-slate-400"
+                />
               </div>
             </div>
 
             {/* Buttons */}
-            <div className="flex justify-end gap-4 pt-6 border-t border-slate-200">
+            <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-5 border-t border-slate-200">
               <button
                 type="button"
-                onClick={() => document.getElementById("my_modal_5").close()}
-                className="rounded-xl border-2 border-slate-300 hover:border-slate-400 px-8 py-3 text-lg font-semibold text-slate-700 transition-all duration-300 hover:bg-slate-100"
+                onClick={() =>
+                  document.getElementById(`modal_${comment?._id}`).close()
+                }
+                className="w-full sm:w-auto rounded-xl border-2 border-slate-300 px-6 sm:px-8 py-3 text-sm sm:text-base font-semibold text-slate-700 transition hover:bg-slate-100"
               >
                 Cancel
               </button>
@@ -153,19 +165,21 @@ export default function EditCommentModal({ comment }) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed px-10 py-3 text-lg font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 disabled:hover:scale-100 flex items-center justify-center gap-2 min-w-[180px]"
+                className="w-full sm:w-auto min-w-[160px] rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 px-6 sm:px-10 py-3 text-sm sm:text-base font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:from-indigo-600 hover:to-purple-600 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {isSubmitting ? (
-                  <>
-                    <span className="animate-spin">⏳</span>
-                    Saving...
-                  </>
-                ) : (
-                  <>
-                    <span>💾</span>
-                    Save Changes
-                  </>
-                )}
+                <div className="flex items-center justify-center gap-2">
+                  {isSubmitting ? (
+                    <>
+                      <span className="animate-spin">⏳</span>
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <span>💾</span>
+                      Save Changes
+                    </>
+                  )}
+                </div>
               </button>
             </div>
           </form>

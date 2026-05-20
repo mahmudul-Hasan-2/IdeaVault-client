@@ -24,6 +24,8 @@ const AddIdeaPage = () => {
       targetAudience: info?.targetAudience,
       problemStatement: info?.problemStatement,
       proposedSolution: info?.proposedSolution,
+      userImage: user.image,
+      userName: user.name,
       userId: user?.id,
     };
 
@@ -44,7 +46,7 @@ const AddIdeaPage = () => {
     }
   };
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 px-2">
       <div className="space-y-2">
         <h2 className="text-4xl font-bold">Add Your Idea</h2>
         <p className="text-gray-500">

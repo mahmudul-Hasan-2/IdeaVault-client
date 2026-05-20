@@ -58,7 +58,9 @@ const IdeaDetailsPage = async ({ params }) => {
 
               <div className="flex flex-col">
                 <span className="font-semibold text-gray-500">Audience</span>
-                <span>{idea.targetAudience}</span>
+                <span className="break-words whitespace-pre-wrap">
+                  {idea.targetAudience}
+                </span>
               </div>
             </div>
 

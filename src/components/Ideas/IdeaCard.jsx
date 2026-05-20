@@ -10,7 +10,7 @@ const TrendingCard = ({ idea }) => {
         alt={idea.name}
         width={200}
         height={200}
-        className="w-full h-80"
+        className="w-full h-100"
       ></Image>
 
       <div className="card-body">
@@ -24,7 +24,7 @@ const TrendingCard = ({ idea }) => {
 
         <p>{idea.estimatedBudget}</p>
         <Link href={`ideas/${idea._id}`}>
-          <button className="btn btn-ghost hover:scale-105 transition-all duration-700">
+          <button className="btn btn-primary w-full hover:scale-105 transition-all duration-700">
             View Details
           </button>
         </Link>

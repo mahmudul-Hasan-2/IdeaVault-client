@@ -10,7 +10,7 @@ const TrendingCard = ({ trendingData }) => {
         alt={trendingData.name}
         width={200}
         height={200}
-        className="w-full "
+        className="w-full h-100"
       ></Image>
 
       <div className="card-body">

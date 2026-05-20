@@ -26,7 +26,7 @@ const TopCreator = () => {
     },
   ];
   return (
-    <div className="space-y-10">
+    <div className="space-y-10 px-2">
       <div>
         <h2 className="text-3xl font-bold">Top Creator</h2>
         <p>

@@ -20,13 +20,9 @@ const Footer = () => {
           </div>
 
           <div className="space-y-5">
-            <h2 className="text-2xl font-bold">Links</h2>
+            <h2 className="text-2xl font-bold">Ideas</h2>
 
             <div className="flex flex-col gap-3 text-gray-500 text-lg">
-              <p className="hover:text-blue-500 duration-200 cursor-pointer">
-                Home
-              </p>
-
               <p className="hover:text-blue-500 duration-200 cursor-pointer">
                 Ideas
               </p>

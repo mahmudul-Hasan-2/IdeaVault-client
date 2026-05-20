@@ -7,7 +7,7 @@ const TrendingIdeas = async () => {
   const trendingIdeaData = await res.json();
   console.log(trendingIdeaData);
   return (
-    <div className=" space-y-10">
+    <div className=" space-y-10 px-2">
       <div className="flex items-center flex-col md:flex-row space-y-2 justify-between px-2">
         <div className="space-y-2">
           <h2 className="text-4xl font-bold">Trending Ideas</h2>
