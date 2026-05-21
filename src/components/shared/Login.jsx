@@ -2,7 +2,7 @@
 
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import React from "react";
 import toast from "react-hot-toast";
 import { BsGoogle } from "react-icons/bs";
@@ -24,6 +24,7 @@ const Login = () => {
 
     if (data) {
       toast.success("Login Success");
+      redirect("/login");
     } else {
       toast.error(`${error.message}`);
     }
