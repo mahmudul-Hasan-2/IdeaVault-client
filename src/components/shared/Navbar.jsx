@@ -79,6 +79,7 @@ const Navbar = () => {
             My Interactions
           </Link>
         </div>
+  
 
         <div className="navbar-end  hidden lg:flex items-center gap-4">
           <button
