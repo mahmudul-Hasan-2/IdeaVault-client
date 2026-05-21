@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import React from "react";
 import IdeaCard from "@/components/Ideas/IdeaCard";
+import MyIdeaCard from "@/components/Ideas/MyIdeaCard";
 
 export const metadata = {
   title: "IdeaVault | MyIdeas",
@@ -15,7 +16,7 @@ const MyIdeasPage = async () => {
   const { token } = await auth.api.getToken({
     headers: await headers(),
   });
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/ideas`, {});
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/ideas`);
   const ideas = await res.json();
   const myIdeas = ideas.filter((idea) => idea.userId === user?.id);
   return (
@@ -23,7 +24,7 @@ const MyIdeasPage = async () => {
       <h2 className="text-3xl font-bold mb-5">My Ideas</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {myIdeas.map((idea) => (
-          <IdeaCard idea={idea} key={idea._id}></IdeaCard>
+          <MyIdeaCard idea={idea} key={idea._id}></MyIdeaCard>
         ))}
       </div>
     </div>

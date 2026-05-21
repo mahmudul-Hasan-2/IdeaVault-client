@@ -5,27 +5,16 @@ import { headers } from "next/headers";
 import Image from "next/image";
 import React from "react";
 
-export const generateMetadata = async ({ params }) => {
-  const { id } = await params;
-
-  const res = await fetch(
-    `https://assignment-9-server-eight.vercel.app/idea/${id}`,
-    {},
-  );
-
-  const data = await res.json();
-
-  return {
-    title: `IdeaVault | ${data.name}`,
-    description: data.detailedDescription,
-  };
+export const metadata = {
+  title: "IdeaLust | Idea",
+  description: "This is a single idea page",
 };
 
 const IdeaDetailsPage = async ({ params }) => {
-  const { id } = await params;
   const { token } = await auth.api.getToken({
     headers: await headers(),
   });
+  const { id } = await params;
   console.log(token);
   const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/idea/${id}`, {
     headers: {

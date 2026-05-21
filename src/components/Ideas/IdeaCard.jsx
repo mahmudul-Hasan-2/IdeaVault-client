@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const TrendingCard = ({ idea }) => {
+const IdeaCard = ({ idea }) => {
   return (
     <div className="rounded space-y-5 shadow hover:-translate-y-2 duration-700">
       <Image
@@ -33,4 +33,4 @@ const TrendingCard = ({ idea }) => {
   );
 };
 
-export default TrendingCard;
+export default IdeaCard;
