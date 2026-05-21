@@ -25,9 +25,12 @@ const DeleteCommentModal = ({ comment }) => {
     setIsDeleting(true);
 
     try {
-      const res = await fetch(`http://localhost:5000/comment/${comment._id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/comment/${comment._id}`,
+        {
+          method: "DELETE",
+        },
+      );
 
       if (!res.ok) {
         throw new Error("Delete request failed");

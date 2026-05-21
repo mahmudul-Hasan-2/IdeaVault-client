@@ -3,11 +3,19 @@ import { headers } from "next/headers";
 import React from "react";
 import IdeaCard from "@/components/Ideas/IdeaCard";
 
+export const metadata = {
+  title: "IdeaVault | MyIdeas",
+  description: "Here my all ideas which shared",
+};
+
 const MyIdeasPage = async () => {
   const { user } = await auth.api.getSession({
     headers: await headers(),
   });
-  const res = await fetch("http://localhost:5000/ideas");
+  const { token } = await auth.api.getToken({
+    headers: await headers(),
+  });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/ideas`, {});
   const ideas = await res.json();
   const myIdeas = ideas.filter((idea) => idea.userId === user?.id);
   return (

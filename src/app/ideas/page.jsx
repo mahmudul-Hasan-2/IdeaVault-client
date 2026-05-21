@@ -6,20 +6,28 @@ import { TriangleAlert } from "lucide-react";
 import { headers } from "next/headers";
 import React from "react";
 
+export const metadata = {
+  title: "IdeaVault | Ideas",
+  description: "All Ideas here",
+};
+
 const IdeasPage = async ({ searchParams }) => {
-  const { user } = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const { user } =
+    (await auth.api.getSession({
+      headers: await headers(),
+    })) || "";
 
   const { search } = await searchParams;
   console.log(search);
 
   const res = await fetch(
-    `${search ? `http://localhost:5000/searchedIdeas?search=${search}` : "http://localhost:5000/ideas"}`,
+    `${search ? `${NEXT_PUBLIC_SERVER_URL}/searchedIdeas?search=${search}` : `${process.env.NEXT_PUBLIC_SERVER_URL}/ideas`}`,
   );
   const ideas = await res.json();
 
-  const categoryRes = await fetch("http://localhost:5000/categories");
+  const categoryRes = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/categories`,
+  );
   const categories = await categoryRes.json();
   console.log(ideas);
 

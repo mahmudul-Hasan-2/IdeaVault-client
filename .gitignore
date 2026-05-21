@@ -1,8 +1,6 @@
-<<<<<<< HEAD
 node_modules
 .env
 .vercel
-=======
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -38,10 +36,6 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
-# vercel
-.vercel
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts
->>>>>>> 8946ffff42da01bab435dd37f04dd3398daefae2

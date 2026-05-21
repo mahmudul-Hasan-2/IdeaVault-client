@@ -3,7 +3,9 @@ import Link from "next/link";
 import React from "react";
 
 const PopularCategories = async () => {
-  const res = await fetch("http://localhost:5000/popularCategories");
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/popularCategories`,
+  );
   const categories = await res.json();
   console.log(categories);
   return (

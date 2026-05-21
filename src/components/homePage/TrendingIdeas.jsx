@@ -3,7 +3,9 @@ import React from "react";
 import TrendingCard from "../shared/TrendingCard";
 
 const TrendingIdeas = async () => {
-  const res = await fetch("http://localhost:5000/trendingIdeas");
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/trendingIdeas`,
+  );
   const trendingIdeaData = await res.json();
   console.log(trendingIdeaData);
   return (

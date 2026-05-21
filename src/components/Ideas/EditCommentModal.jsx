@@ -29,13 +29,16 @@ export default function EditCommentModal({ comment }) {
     const editedData = Object.fromEntries(formData);
 
     try {
-      const res = await fetch(`http://localhost:5000/comment/${comment._id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-type": "application/json",
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/comment/${comment._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(editedData),
         },
-        body: JSON.stringify(editedData),
-      });
+      );
 
       const data = await res.json();
 

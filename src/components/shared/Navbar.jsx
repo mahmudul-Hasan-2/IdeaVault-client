@@ -1,7 +1,7 @@
 "use client";
 
 import { signOut, useSession } from "@/lib/auth-client";
-import { MenuIcon, X } from "lucide-react";
+import { MenuIcon, Moon, Sun, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -10,6 +10,7 @@ import { useTheme } from "next-themes";
 
 const Navbar = () => {
   const { theme, setTheme } = useTheme();
+
   const pathName = usePathname();
   const { data } = useSession();
   const user = data?.user;
@@ -27,9 +28,9 @@ const Navbar = () => {
             <Image
               src={"/assets/logo.png"}
               alt="logo"
-              width={150}
-              height={100}
-              className="rounded-full"
+              width={200}
+              height={150}
+              className="w-full h-20"
             ></Image>
           </Link>
         </div>
@@ -79,7 +80,13 @@ const Navbar = () => {
           </Link>
         </div>
 
-        <div className="navbar-end">
+        <div className="navbar-end  hidden lg:flex items-center gap-4">
+          <button
+            className=" cursor-pointer btn-circle"
+            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          >
+            {theme === "light" ? <Moon></Moon> : <Sun></Sun>}
+          </button>
           {user ? (
             <div className=" hidden lg:flex items-center justify-center gap-2">
               <div className="dropdown dropdown-center">
@@ -113,7 +120,7 @@ const Navbar = () => {
               </button>
             </div>
           ) : (
-            <div className="navbar-end hidden lg:flex gap-2">
+            <div className="hidden lg:flex gap-2">
               <Link href={"/login"}>
                 <button className="py-2 px-6 cursor-pointer hover:scale-105 duration-700 border border-primary rounded-lg font-semibold">
                   Login
@@ -127,13 +134,14 @@ const Navbar = () => {
             </div>
           )}
         </div>
-        <button
-          className="btn"
-          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-        >
-          Toggle Theme
-        </button>
+
         <div className="navbar-end items-center gap-3 lg:hidden">
+          <button
+            className=" cursor-pointer btn-circle"
+            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          >
+            {theme === "light" ? <Moon></Moon> : <Sun></Sun>}
+          </button>
           <div className="dropdown dropdown-end" onClick={handleMenuToggle}>
             <div tabIndex={0} role="button" className="btn btn-circle ">
               <span className="duration-700">
@@ -207,12 +215,6 @@ const Navbar = () => {
               </div>
             </ul>
           </div>
-          <button
-            className="btn"
-            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-          >
-            Toggle Theme
-          </button>
           {user && (
             <div className="dropdown dropdown-end">
               <div tabIndex={0} role="button">

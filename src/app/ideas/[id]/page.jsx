@@ -5,13 +5,39 @@ import { headers } from "next/headers";
 import Image from "next/image";
 import React from "react";
 
+export const generateMetadata = async ({ params }) => {
+  const { id } = await params;
+
+  const res = await fetch(
+    `https://assignment-9-server-eight.vercel.app/idea/${id}`,
+    {},
+  );
+
+  const data = await res.json();
+
+  return {
+    title: `IdeaVault | ${data.name}`,
+    description: data.detailedDescription,
+  };
+};
+
 const IdeaDetailsPage = async ({ params }) => {
   const { id } = await params;
-  const res = await fetch(`http://localhost:5000/idea/${id}`);
+  const { token } = await auth.api.getToken({
+    headers: await headers(),
+  });
+  console.log(token);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/idea/${id}`, {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  });
   const idea = await res.json();
   console.log(idea);
 
-  const commentRes = await fetch(`http://localhost:5000/comments`);
+  const commentRes = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/comments`,
+  );
   const allComments = await commentRes.json();
   console.log(allComments);
   const comments = allComments.filter((comment) => comment.ideaId === idea._id);
@@ -23,7 +49,7 @@ const IdeaDetailsPage = async ({ params }) => {
       <div className="space-y-4 px-2 bg-background/20">
         <div className="overflow-hidden rounded-2xl">
           <Image
-            src={idea?.image || "/"}
+            src={idea?.image || ""}
             alt={idea?.name}
             width={1200}
             height={700}
@@ -44,7 +70,7 @@ const IdeaDetailsPage = async ({ params }) => {
               </div>
             ))}
           </span>
-          <p className="break-words whitespace-pre-wrap text-slate-700">
+          <p className="break-words whitespace-pre-wrap text-gray-500">
             {idea.detailedDescription}
           </p>
           <div className="space-y-6 pt-4 border-t border-gray-300">
@@ -69,9 +95,7 @@ const IdeaDetailsPage = async ({ params }) => {
                 Problem Statement
               </span>
 
-              <p className="text-gray-700 leading-relaxed">
-                {idea.problemStatement}
-              </p>
+              <p className=" leading-relaxed">{idea.problemStatement}</p>
             </div>
 
             <div className="flex flex-col gap-1">
@@ -79,9 +103,7 @@ const IdeaDetailsPage = async ({ params }) => {
                 Proposed Solution
               </span>
 
-              <p className="text-gray-700 leading-relaxed">
-                {idea.proposedSolution}
-              </p>
+              <p className="leading-relaxed">{idea.proposedSolution}</p>
             </div>
           </div>
         </div>
@@ -94,9 +116,23 @@ const IdeaDetailsPage = async ({ params }) => {
           <h2 className="text-3xl font-bold">Comments</h2>
         </div>
         <div className="space-y-4">
-          {comments.map((comment) => (
-            <CommentBox comment={comment} key={comment._id}></CommentBox>
-          ))}
+          {comments.length > 0 ? (
+            comments.map((comment) => (
+              <CommentBox comment={comment} key={comment._id}></CommentBox>
+            ))
+          ) : (
+            <div className="flex min-h-[200px] flex-col items-center justify-center text-center px-6">
+              <div className="text-5xl">💬</div>
+
+              <h2 className="mt-3 text-lg font-semibold text-base-content">
+                No comments yet
+              </h2>
+
+              <p className="mt-1 text-sm text-base-content/60">
+                Be the first one to start the conversation.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
