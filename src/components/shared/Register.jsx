@@ -26,11 +26,12 @@ const Register = () => {
       email: userData?.email, // required
       image: userData?.image,
       password: userData?.password, // required
-      callbackURL: "/",
+      callbackURL: searchParams.get("redirect") || "/",
     });
 
     if (data) {
       toast.success("Register Success");
+      redirect("/login");
     } else {
       toast.error(`${error.message}`);
     }
