@@ -22,7 +22,7 @@ export default function Profile() {
     { name: "Thu", visits: 50 },
     { name: "Fri", visits: 40 },
     { name: "Sat", visits: 70 },
-    { name: "Sun", visits: 60 },
+    { name: "Sun", visits: 66 },
   ];
 
   const user = session?.user;
