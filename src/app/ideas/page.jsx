@@ -40,7 +40,7 @@ const IdeasPage = async ({ searchParams }) => {
           productivity, learning, and innovation.
         </p>{" "}
       </div>
-      <div className="grid grid-cols-12 gap-2 md:gap-0">
+      <div className="grid grid-cols-12 gap-2 md:gap-4  ">
         <div className="col-span-12 md:col-span-9">
           <Input></Input>
         </div>

@@ -16,6 +16,7 @@ const IdeaDetailsPage = async ({ params }) => {
   });
   const { id } = await params;
   console.log(token);
+
   const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/idea/${id}`, {
     headers: {
       authorization: `Bearer ${token}`,
@@ -33,9 +34,11 @@ const IdeaDetailsPage = async ({ params }) => {
   console.log(comments);
 
   console.log(idea);
+
   return (
     <div className="max-w-5xl mx-auto py-10">
       <div className="space-y-4 px-2 bg-background/20">
+        {/* মেইন ব্যানার ইমেজ */}
         <div className="overflow-hidden rounded-2xl">
           <Image
             src={idea?.image || ""}
@@ -53,15 +56,49 @@ const IdeaDetailsPage = async ({ params }) => {
           <h2 className="text-3xl font-bold ">{idea?.name}</h2>
           <span className="text-base font-bold">
             {idea?.tags?.map((tag, index) => (
-              <div key={index} className="inline-block  mb-3">
+              <div key={index} className="inline-block mb-3">
                 <span className="badge badge-primary ml-2">{tag}</span>
                 {index !== idea.tags.length - 1 && " | "}
               </div>
             ))}
           </span>
+
           <p className="break-words whitespace-pre-wrap text-gray-500">
             {idea.detailedDescription}
           </p>
+
+          {/* 🎯 এখানে পিওর <Image> ট্যাগ দিয়ে ইউজার ইনফো হ্যান্ডেল করা হয়েছে */}
+          <div className="flex items-center gap-3 pt-2 pb-4">
+            {idea?.userImage &&
+            idea.userImage.startsWith("http") &&
+            !idea.userImage.includes(
+              "googleusercontent.com/profile/picture",
+            ) ? (
+              <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-zinc-800">
+                <Image
+                  src={idea.userImage}
+                  alt={idea?.userName || "User"}
+                  fill
+                  className="object-cover"
+                  unoptimized // এক্সটার্নাল ইমেজের অপটিমাইজেশন ক্যাশ এড়াতে এটি বেস্ট
+                />
+              </div>
+            ) : (
+              // ডামি লিংকগুলোর জন্য সেফ জোন: ক্র্যাশ ছাড়া টেক্সট অবতার দেখাবে
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700/50 text-white font-bold flex items-center justify-center uppercase select-none text-sm shrink-0">
+                {idea?.userName ? idea.userName.charAt(0) : "U"}
+              </div>
+            )}
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-500 font-medium">
+                Shared by
+              </span>
+              <span className="text-sm font-semibold">
+                {idea?.userName || "Anonymous User"}
+              </span>
+            </div>
+          </div>
+
           <div className="space-y-6 pt-4 border-t border-gray-300">
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col">
@@ -83,7 +120,6 @@ const IdeaDetailsPage = async ({ params }) => {
               <span className="font-semibold text-gray-500">
                 Problem Statement
               </span>
-
               <p className=" leading-relaxed">{idea.problemStatement}</p>
             </div>
 
@@ -91,7 +127,6 @@ const IdeaDetailsPage = async ({ params }) => {
               <span className="font-semibold text-gray-500">
                 Proposed Solution
               </span>
-
               <p className="leading-relaxed">{idea.proposedSolution}</p>
             </div>
           </div>
