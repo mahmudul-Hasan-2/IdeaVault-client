@@ -21,7 +21,7 @@ const IdeasPage = async ({ searchParams }) => {
   console.log(search);
 
   const res = await fetch(
-    `${search ? `${NEXT_PUBLIC_SERVER_URL}/searchedIdeas?search=${search}` : `${process.env.NEXT_PUBLIC_SERVER_URL}/ideas`}`,
+    `${search ? `${process.env.NEXT_PUBLIC_SERVER_URL}/searchedIdeas?search=${search}` : `${process.env.NEXT_PUBLIC_SERVER_URL}/ideas`}`,
   );
   const ideas = await res.json();
 
