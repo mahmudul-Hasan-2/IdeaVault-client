@@ -55,7 +55,7 @@ const AddIdea = () => {
     "text-sm font-bold tracking-wide text-zinc-800 dark:text-zinc-300";
 
   return (
-    <div className="max-w-4xl mx-auto py-2 px-4 md:px-6">
+    <div className=" py-2 px-4 md:px-6">
       {/* হেডার সেকশন - টেক্সট কালার একদম সলিড ব্ল্যাক/হোয়াইট */}
       <div className="space-y-2 mb-8 text-center md:text-left">
         <h2 className="text-3xl md:text-4xl font-black tracking-tight">

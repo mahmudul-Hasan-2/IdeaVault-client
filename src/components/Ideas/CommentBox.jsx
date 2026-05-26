@@ -24,6 +24,7 @@ const CommentBox = ({ comment }) => {
 
       {/* অ্যাকশন ড্রপডাউন (থ্রি-ডটস) */}
       {/* অ্যাকশন ড্রপডাউন (থ্রি-ডটস) */}
+      {/* অ্যাকশন ড্রপডাউন (থ্রি-ডটস) */}
       {comment?.userId === user?.id && (
         <div className="dropdown dropdown-end absolute right-4 top-4 z-20">
           <label
@@ -33,16 +34,21 @@ const CommentBox = ({ comment }) => {
             <BsThreeDots size={18} />
           </label>
 
-          {/* 🎯 উইডথ w-44 থেকে বাড়িয়ে w-56 (224px) করা হলো যেন টেক্সট না ভাঙে */}
           <ul
             tabIndex={0}
             className="dropdown-content menu w-56 rounded-xl bg-white dark:bg-zinc-900 p-2 shadow-xl border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 gap-1"
           >
-            <li className="hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg overflow-hidden transition-colors">
-              <EditCommentModal comment={comment} />
+            {/* 🎯 [FIX] li-তে ইম্পর্ট্যান্টলি 'flex flex-col' এবং মোডাল কন্টেইনারে 'w-full block' দেওয়া হয়েছে */}
+            <li className="hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg overflow-hidden transition-colors flex flex-col">
+              <div className="w-full block p-0 bg-transparent active:bg-transparent hover:bg-transparent">
+                <EditCommentModal comment={comment} />
+              </div>
             </li>
-            <li className="hover:bg-red-50 dark:hover:bg-red-950/30 text-red-600 rounded-lg overflow-hidden transition-colors">
-              <DeleteCommentModal comment={comment} />
+
+            <li className="hover:bg-red-50 dark:hover:bg-red-950/30 text-red-600 rounded-lg overflow-hidden transition-colors flex flex-col">
+              <div className="w-full block p-0 bg-transparent active:bg-transparent hover:bg-transparent text-red-600">
+                <DeleteCommentModal comment={comment} />
+              </div>
             </li>
           </ul>
         </div>
