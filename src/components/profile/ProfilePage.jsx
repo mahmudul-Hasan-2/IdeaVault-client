@@ -28,7 +28,7 @@ export default function Profile() {
   ];
 
   return (
-    <div className="min-h-[10vh] bg-base-200 pt-28 pb-12 px-4 sm:px-6 flex justify-center transition-colors duration-300">
+    <div className="min-h-[5vh] bg-base-200 pt-28 pb-12 px-4 sm:px-6 flex justify-center transition-colors duration-300">
       {/* 🎯 min-w-0 নিশ্চিত করে যে ভেতরের ফ্লেক্স/গ্রিড চার্টকে পুশ করে স্ক্রিনের বাইরে পাঠাবে না */}
       <div className="w-full max-w-3xl space-y-6 min-w-0">
         {/* ১. প্রোফাইল কার্ড */}

@@ -1,10 +1,15 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const TrendingCard = ({ trendingData }) => {
   const defaultPlaceholder =
     "https://images.unsplash.com/photo-1516321318423-f06f85e504b3";
+
+  const router = useRouter();
 
   const isImageValid =
     trendingData?.image && trendingData.image.startsWith("http");

@@ -30,7 +30,7 @@ const Navbar = () => {
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-base-100/60 backdrop-blur-xl border-b border-base-content/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.03)] transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* ১. লোগো সেকশন - টেক্সট গ্রেডিয়েন্ট লোগো */}
           <div className="flex-shrink-0 flex items-center">
