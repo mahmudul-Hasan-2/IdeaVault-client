@@ -52,7 +52,7 @@ const Banner = () => {
   ];
 
   return (
-    <div className="w-full pt-16 sm:pt-20 bg-base-200 transition-colors duration-300">
+    <div className="w-full transition-colors duration-300">
       <div className="w-full rounded-2xl overflow-hidden shadow-2xl relative h-[480px] md:h-[550px] lg:h-[600px] bg-black">
         {slides.map((slide) => (
           <div

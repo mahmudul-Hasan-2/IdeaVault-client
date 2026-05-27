@@ -3,12 +3,15 @@
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import { redirect, useSearchParams } from "next/navigation";
-import React from "react";
+import React, { useState } from "react"; // 🎯 useState ইম্পোর্ট করা হয়েছে
 import toast from "react-hot-toast";
 import { BsGoogle } from "react-icons/bs";
+import { FiEye, FiEyeOff } from "react-icons/fi"; // 🎯 আইকন ইম্পোর্ট করা হয়েছে
 
 const Login = () => {
   const searchParams = useSearchParams();
+  // 🎯 পাসওয়ার্ড শো/হাইড করার জন্য স্টেট
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -38,15 +41,15 @@ const Login = () => {
     console.log(data);
 
     if (data) {
-      toast.success("Login Success");
+      toast.success("Google Sign-In successful");
     } else {
       toast.error(`Google Sign-In failed`);
     }
   };
 
   return (
-    // 🎯 স্ক্রিনের পারফেক্ট সেন্টারে নিয়ে আসার জন্য এবং ডার্ক/লাইট মোড ট্রানজিশন সেফ কন্টেইনার
-    <div className="min-h-[10vh] flex flex-col justify-center items-center px-4  transition-colors duration-300">
+    // 🎯 min-h আপডেট করা হয়েছে যেন স্ক্রিনের একদম মাঝখানে পারফেক্টলি ফিট হয়
+    <div className="min-h-[5vh] flex flex-col justify-center items-center px-4 py-10 transition-colors duration-300">
       <div className="w-full max-w-md space-y-6">
         {/* টাইটেল সেকশন */}
         <div className="text-center space-y-2">
@@ -58,7 +61,7 @@ const Login = () => {
           </p>
         </div>
 
-        {/* 🎯 গ্লাস-মর্ফিক প্রিমিয়াম কার্ড */}
+        {/* গ্লাস-মর্ফিক প্রিমিয়ামカード */}
         <div className="card bg-base-100/70 backdrop-blur-md border border-base-content/5 shadow-xl w-full p-2 sm:p-4 rounded-2xl">
           <div className="card-body p-6 sm:p-8">
             <form onSubmit={handleLogin} className="space-y-4">
@@ -78,23 +81,39 @@ const Login = () => {
                 />
               </div>
 
-              {/* পাসওয়ার্ড ইনপুট ফিল্ড */}
+              {/* পাসওয়ার্ড ইনপুট ফিল্ড */}
               <div className="form-control w-full">
                 <label className="label">
                   <span className="label-text font-bold text-base-content/70">
                     Password
                   </span>
                 </label>
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="••••••••"
-                  className="input input-bordered w-full rounded-xl bg-base-200/50 focus:input-primary transition-all duration-200 font-medium"
-                  required
-                />
+
+                {/* 🎯 পাসওয়ার্ড ইনপুট এবং টগল বাটনের জন্য রিলেটিভ কন্টেইনার */}
+                <div className="relative mt-1">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="••••••••"
+                    className="input input-bordered w-full rounded-xl bg-base-200/50 focus:input-primary pr-12 transition-all duration-200 font-medium"
+                    required
+                  />
+                  {/* শো/হাইড টগল বাটন */}
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-base-content/50 hover:text-primary transition-colors duration-200 cursor-pointer p-1"
+                  >
+                    {showPassword ? (
+                      <FiEyeOff size={18} />
+                    ) : (
+                      <FiEye size={18} />
+                    )}
+                  </button>
+                </div>
               </div>
 
-              {/* লিংক ও নেভিগেশন এরিয়া */}
+              {/* লিংক ও নেভিগেশন এরিয়া */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 text-xs font-semibold text-base-content/60">
                 <a className="link link-hover hover:text-primary transition-colors cursor-pointer">
                   Forgot password?
