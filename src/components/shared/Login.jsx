@@ -1,114 +1,139 @@
 "use client";
 
-import { useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
+import { BsGoogle } from "react-icons/bs";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
-function LoginForm() {
-  const router = useRouter();
+const Login = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-
-  // 🔍 ১. redirect বা callbackUrl যেকোনো প্যারামিটার কুয়েরি থেকে রিড করা
-  const targetRoute =
-    searchParams.get("redirect") ||
-    searchParams.get("callbackUrl") ||
-    "/browse-tasks";
-
-  // 🚨 ২. ব্রেন-ড্যামেজ ফিক্স:ReferenceError চিরতরে বন্ধ করতে এই ভ্যারিয়েবলটা ডিফাইন করে দেওয়া হলো
-  const callbackUrl = targetRoute;
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const formData = new FormData(e.currentTarget);
     const userData = Object.fromEntries(formData.entries());
 
-    // BetterAuth সাইন-ইন
     const { data, error } = await authClient.signIn.email({
       email: userData?.email,
       password: userData?.password,
       rememberMe: true,
-      callbackURL: targetRoute,
+      callbackURL: searchParams.get("redirect") || "/",
     });
 
-    if (error) {
-      toast.error(error.message || "Authentication failed!");
-      return;
-    }
+    setLoading(false);
 
     if (data) {
-      toast.success("Welcome back, Mama!");
-      router.push(targetRoute);
-      router.refresh();
+      toast.success("Login Success");
+      router.push(searchParams.get("redirect") || "/");
+    } else {
+      toast.error(error?.message || "Login failed");
     }
   };
 
+  const googleSignIn = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+      callbackURL: searchParams.get("redirect") || "/",
+    });
+  };
+
   return (
-    <div className="w-full max-w-md bg-zinc-900/50 border border-white/10 p-8 rounded-2xl backdrop-blur-xl shadow-2xl">
-      <h2 className="text-xl font-bold text-white mb-6 uppercase tracking-wider">
-        Login to System
-      </h2>
-
-      <form onSubmit={handleLogin} className="space-y-5">
-        <div className="space-y-1">
-          <label className="text-[11px] font-mono text-zinc-300 uppercase tracking-wider">
-            Email Address
-          </label>
-          <input
-            type="email"
-            name="email"
-            required
-            placeholder="mama@example.com"
-            className="w-full h-11 bg-white/[0.02] border border-white/20 text-white px-4 rounded-xl outline-none focus:border-white/40 font-mono text-xs"
-          />
+    <div className="min-h-[60vh] flex flex-col justify-center items-center px-4 py-12">
+      <div className="w-full max-w-md space-y-6">
+        <div className="text-center space-y-2">
+          <h2 className="text-3xl sm:text-4xl font-black tracking-tight">
+            Welcome Back
+          </h2>
+          <p className="text-sm font-medium text-base-content/60">
+            Login to your account to continue
+          </p>
         </div>
 
-        <div className="space-y-1">
-          <label className="text-[11px] font-mono text-zinc-300 uppercase tracking-wider">
-            Password
-          </label>
-          <div className="relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              required
-              placeholder="••••••••"
-              className="w-full h-11 bg-white/[0.02] border border-white/20 text-white px-4 rounded-xl outline-none focus:border-white/40 font-mono text-xs"
-            />
+        <div className="bg-base-100 border border-base-content/10 shadow-xl rounded-2xl p-6 sm:p-8">
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div className="space-y-1.5">
+              <label className="text-sm font-bold text-base-content/70">
+                Email Address
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="name@example.com"
+                className="w-full h-12 px-4 rounded-xl bg-base-200 border border-base-content/10 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium transition-colors duration-150"
+                required
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-sm font-bold text-base-content/70">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="••••••••"
+                  className="w-full h-12 px-4 pr-12 rounded-xl bg-base-200 border border-base-content/10 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium transition-colors duration-150"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-base-content/40 hover:text-blue-500 transition-colors cursor-pointer"
+                >
+                  {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+                </button>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-semibold text-base-content/60">
+              <span className="hover:text-blue-500 cursor-pointer transition-colors">
+                Forgot password?
+              </span>
+              <div className="flex items-center gap-1.5">
+                <span>Don&apos;t have an account?</span>
+                <Link href="/register" className="text-blue-600 font-bold hover:underline">
+                  Register
+                </Link>
+              </div>
+            </div>
+
             <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-mono text-zinc-400 hover:text-white uppercase tracking-tighter"
+              type="submit"
+              disabled={loading}
+              className="w-full h-12 text-sm font-bold text-white bg-blue-600 hover:bg-blue-500 disabled:opacity-60 rounded-xl shadow-lg shadow-blue-600/20 active:scale-[0.98] transition-all duration-150 cursor-pointer"
             >
-              {showPassword ? "Hide" : "Show"}
+              {loading ? "Logging in..." : "Log In"}
             </button>
-          </div>
-        </div>
+          </form>
 
-        <button
-          type="submit"
-          className="w-full h-11 bg-white text-black font-bold rounded-xl uppercase tracking-widest text-xs transition-transform active:scale-[0.98] mt-2"
-        >
-          Sign In & Execute
-        </button>
-      </form>
+          <div className="flex items-center gap-3 my-6">
+            <div className="flex-1 h-px bg-base-content/10" />
+            <span className="text-xs font-bold text-base-content/30 uppercase tracking-wider">
+              Or continue with
+            </span>
+            <div className="flex-1 h-px bg-base-content/10" />
+          </div>
+
+          <button
+            onClick={googleSignIn}
+            type="button"
+            className="w-full h-12 rounded-xl border border-base-content/15 hover:bg-base-200 flex items-center justify-center gap-2.5 font-bold text-sm active:scale-[0.98] transition-all duration-150 cursor-pointer"
+          >
+            <BsGoogle className="text-red-500 text-base" />
+            <span>Google Account</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
-}
+};
 
-export default function LoginPage() {
-  return (
-    <section className="w-full min-h-screen bg-[#09090b] flex items-center justify-center px-4 font-sans antialiased">
-      <Suspense
-        fallback={
-          <div className="text-white font-mono text-xs animate-pulse">
-            LOADING_SECURE_AUTH_MODULE...
-          </div>
-        }
-      >
-        <LoginForm />
-      </Suspense>
-    </section>
-  );
-}
+export default Login;
