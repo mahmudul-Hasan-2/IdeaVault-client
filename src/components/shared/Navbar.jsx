@@ -49,6 +49,9 @@ const Navbar = () => {
             <Link className={linkStyle("/")} href={"/"}>
               Home
             </Link>
+            <Link className={linkStyle("/about")} href={"/about"}>
+              About
+            </Link>
             <Link className={linkStyle("/ideas")} href={"/ideas"}>
               Ideas
             </Link>
@@ -161,6 +164,12 @@ const Navbar = () => {
                     href={"/"}
                   >
                     Home
+                  </Link>
+                  <Link
+                    className={`${linkStyle("/about")} p-2.5 hover:bg-base-content/5 rounded-lg`}
+                    href={"/about"}
+                  >
+                    About
                   </Link>
                   <Link
                     className={`${linkStyle("/ideas")} p-2.5 hover:bg-base-content/5 rounded-lg`}
