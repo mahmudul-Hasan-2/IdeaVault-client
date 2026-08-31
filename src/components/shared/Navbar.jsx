@@ -31,7 +31,7 @@ const Navbar = () => {
     const isActive = pathName === path;
     return `text-sm font-bold tracking-tight transition-all duration-200 hover:text-blue-600 ${
       isActive
-        ? "text-blue-600 font-extrabold scale-102"
+        ? "text-blue-600 font-extrabold"
         : "text-base-content/80 hover:text-base-content"
     }`;
   };
@@ -42,7 +42,7 @@ const Navbar = () => {
 
     return (
       <div
-        className={`relative rounded-full overflow-hidden bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-500 shadow-md ring-2 ring-blue-500/40 ring-offset-2 ring-offset-base-100 transition-all duration-200 hover:ring-blue-500/70 hover:scale-105 active:scale-95 ${className}`}
+        className={`relative shrink-0 rounded-full overflow-hidden bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-500 shadow-md ring-2 ring-blue-500/40 transition-all duration-200 hover:ring-blue-500/70 hover:scale-105 active:scale-95 ${className}`}
         style={{ width: size, height: size }}
       >
         {showImage ? (
@@ -68,48 +68,48 @@ const Navbar = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-base-100/60 backdrop-blur-xl border-b border-base-content/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.03)] transition-colors duration-300">
-      <div className="container mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* ১. লোগো সেকশন */}
-          <div className="flex-shrink-0 flex items-center">
+    <header className="fixed top-0 left-0 w-full max-w-[100vw] z-50 overflow-x-hidden bg-base-100/60 backdrop-blur-xl border-b border-base-content/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.03)] transition-colors duration-300">
+      <div className="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between gap-2 h-16 sm:h-20 min-w-0">
+          {/* Logo */}
+          <div className="flex-shrink-0 min-w-0 max-w-[55%] sm:max-w-none">
             <Link
-              href={"/"}
-              className="transition-transform hover:scale-[1.02] active:scale-98"
+              href="/"
+              className="block transition-transform hover:scale-[1.02] active:scale-98"
             >
-              <h1 className="text-2xl sm:text-3xl font-black tracking-tight bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent drop-shadow-sm select-none">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent drop-shadow-sm select-none truncate">
                 IdeaVault
               </h1>
             </Link>
           </div>
 
-          {/* ২. ডেস্কটপ নেভিগেশন */}
-          <nav className="hidden lg:flex items-center gap-6">
-            <Link className={linkStyle("/")} href={"/"}>
+          {/* Desktop nav */}
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-6 shrink-0">
+            <Link className={linkStyle("/")} href="/">
               Home
             </Link>
-            <Link className={linkStyle("/about")} href={"/about"}>
+            <Link className={linkStyle("/about")} href="/about">
               About
             </Link>
-            <Link className={linkStyle("/ideas")} href={"/ideas"}>
+            <Link className={linkStyle("/ideas")} href="/ideas">
               Ideas
             </Link>
-            <Link className={linkStyle("/addIdea")} href={"/addIdea"}>
+            <Link className={linkStyle("/addIdea")} href="/addIdea">
               Add Idea
             </Link>
-            <Link className={linkStyle("/myIdeas")} href={"/myIdeas"}>
+            <Link className={linkStyle("/myIdeas")} href="/myIdeas">
               My Ideas
             </Link>
             <Link
               className={linkStyle("/myInteractions")}
-              href={"/myInteractions"}
+              href="/myInteractions"
             >
               My Interactions
             </Link>
           </nav>
 
-          {/* ৩. ডেস্কটপ রাইট সাইড */}
-          <div className="hidden lg:flex items-center gap-4">
+          {/* Desktop right */}
+          <div className="hidden lg:flex items-center gap-3 xl:gap-4 shrink-0">
             <button
               className="p-2.5 rounded-full border border-base-content/10 bg-base-content/5 text-base-content/80 hover:bg-base-content/10 transition-all cursor-pointer"
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
@@ -125,16 +125,16 @@ const Navbar = () => {
                     tabIndex={0}
                     role="button"
                     aria-label={`${user?.name || "User"} menu`}
-                    className="cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-base-100 rounded-full"
+                    className="cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-full"
                   >
-                    <UserAvatar size={44} />
+                    <UserAvatar size={40} />
                   </div>
                   <ul
                     tabIndex={0}
-                    className="dropdown-content menu mt-3 w-56 p-2 shadow-2xl rounded-xl bg-base-100/90 backdrop-blur-xl border border-base-content/10 text-base-content z-[100]"
+                    className="dropdown-content menu mt-3 w-56 max-w-[calc(100vw-1.5rem)] p-2 shadow-2xl rounded-xl bg-base-100/95 backdrop-blur-xl border border-base-content/10 text-base-content z-[100]"
                   >
                     <li className="menu-title px-3 py-2">
-                      <div className="flex flex-col gap-0.5 normal-case">
+                      <div className="flex flex-col gap-0.5 normal-case min-w-0">
                         <span className="font-bold text-sm text-base-content truncate">
                           {user?.name || "User"}
                         </span>
@@ -155,20 +155,20 @@ const Navbar = () => {
                 </div>
                 <button
                   onClick={() => signOut()}
-                  className="px-5 py-2.5 text-sm font-bold text-white bg-red-600 hover:bg-red-500 rounded-xl shadow-lg shadow-red-500/10 active:scale-[0.98] transition-all cursor-pointer"
+                  className="px-4 py-2 text-sm font-bold text-white bg-red-600 hover:bg-red-500 rounded-xl shadow-lg shadow-red-500/10 active:scale-[0.98] transition-all cursor-pointer"
                 >
                   Logout
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-2.5">
-                <Link href={"/login"}>
-                  <button className="px-5 py-2.5 text-sm font-bold text-base-content border border-base-content/10 bg-base-content/5 hover:bg-base-content/10 rounded-xl transition-all cursor-pointer">
+              <div className="flex items-center gap-2">
+                <Link href="/login">
+                  <button className="px-4 py-2 text-sm font-bold text-base-content border border-base-content/10 bg-base-content/5 hover:bg-base-content/10 rounded-xl transition-all cursor-pointer">
                     Login
                   </button>
                 </Link>
-                <Link href={"/register"}>
-                  <button className="px-5 py-2.5 text-sm font-bold text-white bg-blue-600 hover:bg-blue-500 rounded-xl shadow-lg shadow-blue-500/10 transition-all cursor-pointer">
+                <Link href="/register">
+                  <button className="px-4 py-2 text-sm font-bold text-white bg-blue-600 hover:bg-blue-500 rounded-xl shadow-lg shadow-blue-500/10 transition-all cursor-pointer">
                     Register
                   </button>
                 </Link>
@@ -176,8 +176,8 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* ৪. মোবাইল রাইট সাইড */}
-          <div className="flex lg:hidden items-center gap-2">
+          {/* Mobile right */}
+          <div className="flex lg:hidden items-center gap-1.5 sm:gap-2 shrink-0">
             <button
               className="p-2 rounded-full border border-base-content/10 bg-base-content/5 text-base-content/80 transition-colors"
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
@@ -186,10 +186,11 @@ const Navbar = () => {
               {theme === "light" ? <Moon size={16} /> : <Sun size={16} />}
             </button>
 
-            <div className="dropdown dropdown-end" onClick={handleMenuToggle}>
+            <div className="dropdown dropdown-end">
               <div
                 tabIndex={0}
                 role="button"
+                onClick={handleMenuToggle}
                 className="p-2 rounded-full border border-base-content/10 bg-base-content/5 text-base-content hover:bg-base-content/10 transition-all"
                 aria-label="Open menu"
               >
@@ -198,42 +199,42 @@ const Navbar = () => {
 
               <ul
                 tabIndex={0}
-                className="dropdown-content menu mt-3 w-56 p-3 shadow-3xl rounded-2xl bg-base-100/90 backdrop-blur-2xl border border-base-content/10 gap-1.5 z-[999]"
+                className="dropdown-content menu mt-3 w-56 max-w-[calc(100vw-1rem)] p-3 shadow-3xl rounded-2xl bg-base-100/95 backdrop-blur-2xl border border-base-content/10 gap-1.5 z-[999] right-0"
               >
                 <div className="flex flex-col gap-1 pb-3.5 border-b border-base-content/5">
                   <Link
                     className={`${linkStyle("/")} p-2.5 hover:bg-base-content/5 rounded-lg`}
-                    href={"/"}
+                    href="/"
                   >
                     Home
                   </Link>
                   <Link
                     className={`${linkStyle("/about")} p-2.5 hover:bg-base-content/5 rounded-lg`}
-                    href={"/about"}
+                    href="/about"
                   >
                     About
                   </Link>
                   <Link
                     className={`${linkStyle("/ideas")} p-2.5 hover:bg-base-content/5 rounded-lg`}
-                    href={"/ideas"}
+                    href="/ideas"
                   >
                     Ideas
                   </Link>
                   <Link
                     className={`${linkStyle("/addIdea")} p-2.5 hover:bg-base-content/5 rounded-lg`}
-                    href={"/addIdea"}
+                    href="/addIdea"
                   >
                     Add Idea
                   </Link>
                   <Link
                     className={`${linkStyle("/myIdeas")} p-2.5 hover:bg-base-content/5 rounded-lg`}
-                    href={"/myIdeas"}
+                    href="/myIdeas"
                   >
                     My Ideas
                   </Link>
                   <Link
                     className={`${linkStyle("/myInteractions")} p-2.5 hover:bg-base-content/5 rounded-lg`}
-                    href={"/myInteractions"}
+                    href="/myInteractions"
                   >
                     My Interactions
                   </Link>
@@ -241,12 +242,12 @@ const Navbar = () => {
 
                 {!user && (
                   <div className="flex flex-col gap-2.5 pt-3.5">
-                    <Link href={"/login"} className="w-full">
+                    <Link href="/login" className="w-full">
                       <button className="w-full py-2.5 text-center text-sm font-bold text-base-content border border-base-content/10 rounded-xl">
                         Login
                       </button>
                     </Link>
-                    <Link href={"/register"} className="w-full">
+                    <Link href="/register" className="w-full">
                       <button className="w-full py-2.5 text-center text-sm font-bold text-white bg-blue-600 rounded-xl">
                         Register
                       </button>
@@ -264,14 +265,14 @@ const Navbar = () => {
                   aria-label={`${user?.name || "User"} menu`}
                   className="cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-full"
                 >
-                  <UserAvatar size={36} />
+                  <UserAvatar size={34} />
                 </div>
                 <ul
                   tabIndex={0}
-                  className="dropdown-content menu mt-3 w-52 p-2 shadow-3xl rounded-xl bg-base-100/90 backdrop-blur-xl border border-base-content/10 text-base-content z-[999]"
+                  className="dropdown-content menu mt-3 w-52 max-w-[calc(100vw-1rem)] p-2 shadow-3xl rounded-xl bg-base-100/95 backdrop-blur-xl border border-base-content/10 text-base-content z-[999] right-0"
                 >
                   <li className="menu-title px-3 py-2">
-                    <div className="flex flex-col gap-0.5 normal-case">
+                    <div className="flex flex-col gap-0.5 normal-case min-w-0">
                       <span className="font-bold text-sm text-base-content truncate">
                         {user?.name || "User"}
                       </span>
