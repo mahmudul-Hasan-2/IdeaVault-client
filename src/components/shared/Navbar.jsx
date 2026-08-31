@@ -2,11 +2,18 @@
 
 import { signOut, useSession } from "@/lib/auth-client";
 import { MenuIcon, Moon, Sun, X, User, LogOut } from "lucide-react";
-import Image from "next/image"; // 🎯 next/image ইম্পোর্ট করা হলো
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 import { useTheme } from "next-themes";
+
+const getInitials = (name = "") => {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "U";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+};
 
 const Navbar = () => {
   const { theme, setTheme } = useTheme();
@@ -14,6 +21,7 @@ const Navbar = () => {
   const { data } = useSession();
   const user = data?.user;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -28,11 +36,42 @@ const Navbar = () => {
     }`;
   };
 
+  const UserAvatar = ({ size = 44, className = "" }) => {
+    const showImage = user?.image && !imgError;
+    const initials = getInitials(user?.name);
+
+    return (
+      <div
+        className={`relative rounded-full overflow-hidden bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-500 shadow-md ring-2 ring-blue-500/40 ring-offset-2 ring-offset-base-100 transition-all duration-200 hover:ring-blue-500/70 hover:scale-105 active:scale-95 ${className}`}
+        style={{ width: size, height: size }}
+      >
+        {showImage ? (
+          <Image
+            src={user.image}
+            alt={user?.name || "User avatar"}
+            fill
+            sizes={`${size}px`}
+            className="object-cover"
+            unoptimized
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <span
+            className="absolute inset-0 flex items-center justify-center text-white font-black select-none"
+            style={{ fontSize: size * 0.36 }}
+          >
+            {initials}
+          </span>
+        )}
+      </div>
+    );
+  };
+
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-base-100/60 backdrop-blur-xl border-b border-base-content/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.03)] transition-colors duration-300">
       <div className="container mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* ১. লোগো সেকশন - টেক্সট গ্রেডিয়েন্ট লোগো */}
+          {/* ১. লোগো সেকশন */}
           <div className="flex-shrink-0 flex items-center">
             <Link
               href={"/"}
@@ -44,7 +83,7 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* ২. ডেস্কটপ নেভিগেশন লিংকসমূহ */}
+          {/* ২. ডেস্কটপ নেভিগেশন */}
           <nav className="hidden lg:flex items-center gap-6">
             <Link className={linkStyle("/")} href={"/"}>
               Home
@@ -69,7 +108,7 @@ const Navbar = () => {
             </Link>
           </nav>
 
-          {/* ৩. ডেস্কটপ রাইট বাটন ও ইউজার মেনু */}
+          {/* ৩. ডেস্কটপ রাইট সাইড */}
           <div className="hidden lg:flex items-center gap-4">
             <button
               className="p-2.5 rounded-full border border-base-content/10 bg-base-content/5 text-base-content/80 hover:bg-base-content/10 transition-all cursor-pointer"
@@ -82,27 +121,28 @@ const Navbar = () => {
             {user ? (
               <div className="flex items-center gap-3">
                 <div className="dropdown dropdown-end">
-                  {/* 🎯 ডেস্কটপ ইউজার এভাটার: next/image ব্যবহার করা হয়েছে */}
                   <div
                     tabIndex={0}
                     role="button"
-                    className="relative w-11 h-11 rounded-full ring-2 ring-blue-500/30 ring-offset-2 ring-offset-base-100/40 overflow-hidden bg-base-content/5 shadow-md"
+                    aria-label={`${user?.name || "User"} menu`}
+                    className="cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-base-100 rounded-full"
                   >
-                    <Image
-                      src={
-                        user?.image ||
-                        "https://images.unsplash.com/photo-1534528741775-53994a69daeb"
-                      }
-                      alt="User Avatar"
-                      fill
-                      className="object-cover"
-                      unoptimized
-                    />
+                    <UserAvatar size={44} />
                   </div>
                   <ul
                     tabIndex={0}
-                    className="dropdown-content menu mt-3 w-52 p-2 shadow-2xl rounded-xl bg-base-100/80 backdrop-blur-xl border border-base-content/10 text-base-content"
+                    className="dropdown-content menu mt-3 w-56 p-2 shadow-2xl rounded-xl bg-base-100/90 backdrop-blur-xl border border-base-content/10 text-base-content z-[100]"
                   >
+                    <li className="menu-title px-3 py-2">
+                      <div className="flex flex-col gap-0.5 normal-case">
+                        <span className="font-bold text-sm text-base-content truncate">
+                          {user?.name || "User"}
+                        </span>
+                        <span className="text-xs font-medium text-base-content/50 truncate">
+                          {user?.email}
+                        </span>
+                      </div>
+                    </li>
                     <li>
                       <Link
                         href="/profile"
@@ -136,11 +176,12 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* ৪. মোবাইল রেসপন্সিভ রাইট সাইড */}
+          {/* ৪. মোবাইল রাইট সাইড */}
           <div className="flex lg:hidden items-center gap-2">
             <button
               className="p-2 rounded-full border border-base-content/10 bg-base-content/5 text-base-content/80 transition-colors"
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+              aria-label="Toggle theme"
             >
               {theme === "light" ? <Moon size={16} /> : <Sun size={16} />}
             </button>
@@ -150,6 +191,7 @@ const Navbar = () => {
                 tabIndex={0}
                 role="button"
                 className="p-2 rounded-full border border-base-content/10 bg-base-content/5 text-base-content hover:bg-base-content/10 transition-all"
+                aria-label="Open menu"
               >
                 {isMenuOpen ? <X size={18} /> : <MenuIcon size={18} />}
               </div>
@@ -214,29 +256,30 @@ const Navbar = () => {
               </ul>
             </div>
 
-            {/* 🎯 মোবাইল ইউজার এভাটার: next/image ব্যবহার করা হয়েছে */}
             {user && (
               <div className="dropdown dropdown-end">
                 <div
                   tabIndex={0}
                   role="button"
-                  className="relative w-9 h-9 rounded-full ring-2 ring-blue-500/30 overflow-hidden bg-base-content/5 shadow-xl"
+                  aria-label={`${user?.name || "User"} menu`}
+                  className="cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-full"
                 >
-                  <Image
-                    src={
-                      user?.image ||
-                      "https://images.unsplash.com/photo-1534528741775-53994a69daeb"
-                    }
-                    alt="User Avatar"
-                    fill
-                    className="object-cover"
-                    unoptimized
-                  />
+                  <UserAvatar size={36} />
                 </div>
                 <ul
                   tabIndex={0}
-                  className="dropdown-content menu mt-3 w-52 p-2 shadow-3xl rounded-xl bg-base-100/80 backdrop-blur-xl border border-base-content/10 text-base-content"
+                  className="dropdown-content menu mt-3 w-52 p-2 shadow-3xl rounded-xl bg-base-100/90 backdrop-blur-xl border border-base-content/10 text-base-content z-[999]"
                 >
+                  <li className="menu-title px-3 py-2">
+                    <div className="flex flex-col gap-0.5 normal-case">
+                      <span className="font-bold text-sm text-base-content truncate">
+                        {user?.name || "User"}
+                      </span>
+                      <span className="text-xs font-medium text-base-content/50 truncate">
+                        {user?.email}
+                      </span>
+                    </div>
+                  </li>
                   <li>
                     <Link
                       href="/profile"
