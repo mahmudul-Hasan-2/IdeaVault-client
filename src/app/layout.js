@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
       className={` ${PlusJakatraSans.variable} duration-700 h-full antialiased`}
     >
-      <body className="min-h-screen flex flex-col justify-between gap-20 ">
+      <body className="min-h-screen flex flex-col justify-between gap-10">
         <ThemeProvider
           attribute="data-theme"
           enableSystem
