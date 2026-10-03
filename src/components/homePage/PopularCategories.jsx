@@ -13,6 +13,8 @@ const PopularCategories = async () => {
   const defaultIcon =
     "https://images.unsplash.com/photo-1516321318423-f06f85e504b3";
 
+  const safeCategories = categories || [];
+
   return (
     <div className="space-y-10 py-10 px-4  mx-auto">
       {/* হেডার সেকশন */}
@@ -28,11 +30,10 @@ const PopularCategories = async () => {
 
       {/* ক্যাটাগরি গ্রিড */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {categories.map((category) => {
-
-
+        {safeCategories.map((category) => {
           return (
             <CategoriesCard
+              defaultIcon={defaultIcon}
               category={category}
               key={category._id}
             ></CategoriesCard>

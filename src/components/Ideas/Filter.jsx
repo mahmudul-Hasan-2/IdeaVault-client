@@ -14,13 +14,13 @@ const Filter = ({ categories }) => {
   return (
     <div className="w-full  relative group">
       {/* চারপাশের হালকা গ্লো ইফেক্ট (সার্চ বক্সের সাথে মিল রেখে) */}
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl blur opacity-10 group-hover:opacity-25 transition duration-300" />
+      <div className="absolute  transition duration-300" />
 
       <div className="relative">
         <select
           defaultValue="Filter by category"
           onChange={(e) => handleFiltering(e.target.value)}
-          className="w-full h-[48px] px-4 bg-[#1a1a1e] text-zinc-300 placeholder:text-zinc-500 text-sm font-medium rounded-xl border border-zinc-800/80 focus:border-indigo-500/80 focus:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/10 transition-all duration-200 shadow-inner appearance-none cursor-pointer"
+          className="w-full h-[48px] px-4  placeholder:text-zinc-500 text-sm font-medium rounded-xl border border-zinc-800/80 focus:border-indigo-500/80 focus:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/10 transition-all duration-200 shadow-inner appearance-none cursor-pointer"
         >
           <option disabled value="Filter by category">
             Filter by category

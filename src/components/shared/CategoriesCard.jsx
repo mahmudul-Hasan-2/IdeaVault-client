@@ -4,11 +4,11 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const CategoriesCard = ({ category }) => {
+const CategoriesCard = ({ category, defaultIcon }) => {
   const router = useRouter();
 
-  const isIconValid = category?.icon && category.icon.startsWith("http");
-  const finalIconSrc = isIconValid ? category.icon : defaultIcon;
+  const isIconValid = category?.image && category.image.startsWith("http");
+  const finalIconSrc = isIconValid ? category.image : defaultIcon;
 
   return (
     <div>
@@ -17,7 +17,7 @@ const CategoriesCard = ({ category }) => {
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/[0.01] to-blue-500/[0.03] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
         {/* আইকন কন্টেইনার */}
-        <div className="relative w-16 h-16 rounded-xl bg-zinc-50 border border-zinc-100 dark:border-zinc-800/60 p-3 flex items-center justify-center shrink-0 transition-transform duration-500 group-hover:scale-110">
+        <div className="relative w-18 h-18 rounded-xl bg-zinc-50 border border-zinc-100 dark:border-zinc-800/60 p-3 flex items-center justify-center shrink-0 transition-transform duration-500 group-hover:scale-110">
           <div className="relative w-full h-full">
             <Image
               src={finalIconSrc}

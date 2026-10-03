@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react"; // 🎯 useEffect ইম্পোর্ট করা হলো
@@ -105,14 +106,14 @@ const Banner = () => {
             className="btn btn-circle btn-md bg-black/40 hover:bg-black/70 border border-white/10 text-white backdrop-blur-md transition-all cursor-pointer shadow-lg active:scale-90"
             aria-label="Previous slide"
           >
-            ❮
+            <ArrowLeft></ArrowLeft>
           </button>
           <button
             onClick={handleNext}
             className="btn btn-circle btn-md bg-black/40 hover:bg-black/70 border border-white/10 text-white backdrop-blur-md transition-all cursor-pointer shadow-lg active:scale-90"
             aria-label="Next slide"
           >
-            ❯
+            <ArrowRight></ArrowRight>
           </button>
         </div>
       </div>

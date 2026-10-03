@@ -20,18 +20,19 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={` ${PlusJakatraSans.variable} duration-700 h-full antialiased`}
+      className={`${PlusJakatraSans.variable} duration-700 h-full antialiased`}
     >
       <body className="min-h-screen flex flex-col justify-between gap-10">
         <ThemeProvider
           attribute="data-theme"
-          enableSystem
           defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
-          <Navbar></Navbar>
+          <Navbar />
           <div className="container mx-auto grow pt-40">{children}</div>
-          <Footer></Footer>
-          <Toaster></Toaster>
+          <Footer />
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
